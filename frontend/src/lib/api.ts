@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4001/api";
+const API_URL = process.env.CALENDAR_API_URL || "http://localhost:4001/api";
 
 export class ApiError extends Error {}
 
@@ -60,7 +60,10 @@ export function fetchVapidPublicKey() {
   return request<{ publicKey: string }>("/push/vapid-public-key");
 }
 
-export function subscribePush(token: string, subscription: PushSubscriptionJSON) {
+export function subscribePush(
+  token: string,
+  subscription: PushSubscriptionJSON,
+) {
   return request<{ ok: true }>("/push/subscribe", {
     method: "POST",
     headers: { Authorization: `Bearer ${token}` },
@@ -90,7 +93,12 @@ export function fetchReminders(token: string) {
   });
 }
 
-export function createReminder(token: string, date: string, remindAtIso: string, message: string) {
+export function createReminder(
+  token: string,
+  date: string,
+  remindAtIso: string,
+  message: string,
+) {
   return request<Reminder>("/reminders", {
     method: "POST",
     headers: { Authorization: `Bearer ${token}` },
