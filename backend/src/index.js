@@ -24,7 +24,8 @@ app.use(
     origin(origin, callback) {
       if (!origin) return callback(null, true); // curl/server-to-server
       if (allowedOrigins.includes(origin)) return callback(null, true);
-      if (isDev && /^http:\/\/localhost:\d+$/.test(origin)) return callback(null, true);
+      if (isDev && /^http:\/\/localhost:\d+$/.test(origin))
+        return callback(null, true);
       callback(new Error(`Origin ${origin} not allowed by CORS`));
     },
   }),
@@ -44,11 +45,13 @@ app.use((req, res) => {
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).json({ error: "সার্ভারে একটি সমস্যা হয়েছে (internal server error)" });
+  res
+    .status(500)
+    .json({ error: "সার্ভারে একটি সমস্যা হয়েছে (internal server error)" });
 });
 
 const port = process.env.PORT || 4001;
 app.listen(port, () => {
-  console.log(`Bangla calendar API listening on http://localhost:${port}`);
+  console.log(`Bangla calendar API listening on :${port}`);
   startReminderCron();
 });
