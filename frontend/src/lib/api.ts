@@ -1,4 +1,4 @@
-const API_URL = process.env.CALENDAR_API_URL || "http://localhost:4001/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4001/api";
 
 export class ApiError extends Error {}
 
