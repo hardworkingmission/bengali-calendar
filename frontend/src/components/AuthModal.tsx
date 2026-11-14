@@ -13,12 +13,14 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
+  const [previousView, setPreviousView] = useState({ open, mode });
+  if (previousView.open !== open || previousView.mode !== mode) {
+    setPreviousView({ open, mode });
     if (open) {
       setError(null);
       setPassword("");
     }
-  }, [open, mode]);
+  }
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {

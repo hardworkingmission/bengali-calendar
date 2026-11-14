@@ -3,6 +3,21 @@
 An interactive Bangladesh-standard Bengali calendar with dual Bangla/Gregorian dates,
 festival tracking, and personal notes that sync across devices once signed in.
 
+[![CI](https://github.com/hardworkingmission/bengali-calendar/actions/workflows/node.js.yml/badge.svg)](https://github.com/hardworkingmission/bengali-calendar/actions/workflows/node.js.yml)
+
+## Features
+
+- Bangladesh-standard Bengali dates alongside Gregorian dates
+- Month and year views with festival highlighting
+- Personal notes stored locally, with optional account-based sync
+- Scheduled reminders through browser push notifications and email
+- Docker development setup and an AWS EC2/RDS deployment guide
+
+## Technology
+
+Next.js 16, React 19, TypeScript, Zustand, Express, MySQL, JWT authentication,
+Web Push, and Resend. Use **Node.js 24** for local development, matching Docker and CI.
+
 ## Structure
 
 - `frontend/` — Next.js (App Router, TypeScript), state managed with [Zustand](https://github.com/pmndrs/zustand)
@@ -28,6 +43,15 @@ Notes persist in a `mysql-data` Docker volume, so they survive `docker compose d
 
 ## Run locally without Docker
 
+Clone the repository first:
+
+```bash
+git clone https://github.com/hardworkingmission/bengali-calendar.git
+cd bengali-calendar
+```
+
+You need Node.js 24 and MySQL 8. Docker users can use the setup above instead.
+
 For AWS deployment with Docker on EC2 and a private RDS MySQL database, follow
 [the AWS deployment guide](deploy/AWS.md). Use `docker-compose.prod.yml` and
 `.env.production.example` for that deployment.
@@ -37,7 +61,7 @@ For AWS deployment with Docker on EC2 and a private RDS MySQL database, follow
 ```bash
 cd backend
 cp .env.example .env   # edit DB_* to point at your local MySQL
-npm install
+npm ci
 npm run db:migrate
 npm run dev             # http://localhost:4001
 ```
@@ -46,7 +70,8 @@ npm run dev             # http://localhost:4001
 
 ```bash
 cd frontend
-npm install
+cp .env.example .env.local
+npm ci
 npm run dev             # http://localhost:3000 (or next free port)
 ```
 
@@ -122,3 +147,21 @@ runs a `node-cron` job every minute that dispatches every due reminder through
   reminders have no such restriction.
 - The reminder cron runs inside the `backend` container, so it needs an
   always-on host — serverless/sleep-on-idle platforms won't fire reminders reliably.
+
+## Development checks
+
+```bash
+npm run lint --prefix frontend
+npm run build --prefix frontend
+```
+
+GitHub Actions runs frontend lint/build and backend JavaScript syntax checks.
+There is currently no automated integration test suite; verify sign-in, note sync,
+and reminders against a configured database when changing those features.
+
+## Contributing
+
+Open an issue for bugs or proposed features. For code changes, fork the repository,
+create a branch, run the checks above, and submit a pull request describing the
+change and how you verified it. Never commit populated `.env` files, credentials,
+database backups, or private keys; use the included example files for configuration.

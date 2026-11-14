@@ -28,11 +28,16 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# Keep real environment files private; publish only example templates.
 .env
-.env.local
-.env.*.local
-.env.production
+.env.*
+!.env.example
+!.env.*.example
+*.key
+*.p12
+*.pfx
+.aws/
+.codex/
 
 # vercel
 .vercel

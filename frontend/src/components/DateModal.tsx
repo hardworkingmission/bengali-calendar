@@ -48,10 +48,12 @@ export function DateModal({
   const [reminderTime, setReminderTime] = useState("09:00");
   const [reminderMessage, setReminderMessage] = useState("");
 
-  useEffect(() => {
+  const [previousSelection, setPreviousSelection] = useState({ initialNote, target });
+  if (previousSelection.initialNote !== initialNote || previousSelection.target !== target) {
+    setPreviousSelection({ initialNote, target });
     setNote(initialNote);
     setReminderMessage("");
-  }, [initialNote, target]);
+  }
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
